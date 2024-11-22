@@ -1,5 +1,12 @@
 // create an array to store the todos
-const todoList = ['make dinner', 'do laundry'];
+// 
+const todoList = [{
+    name: 'make dinner',
+    dueDate: '2024-11-25'
+}, {
+    name: 'do laundry',
+    dueDate: '2024-11-25'
+}];
 
 // display the todo list each time the page loads
 displayTodoList ();
@@ -10,19 +17,34 @@ function displayTodoList () {
     let todoListHtml = '';
 
     for (let i = 0; i < todoList.length; i++) {
-        // create a variable to store the value from the array
-        const activity = todoList[i];
+        // create a variable to store the value (object) from the array
+        const activityObject = todoList[i];
+
+        // get and store the values from the object into variables
+        // destructing is when you take the name property from the object and puts it in a variable with the same name
+        // const name = activityObject.name;
+        // const dueDate = activityObject.dueDate;
+        // const {dueDate} = activityObject;
+        const {name, dueDate} = activityObject;
     
-        // craete generate html code for each todo
-        const html  = `<p>${activity}</p>`;
+        // craete generate html code for each todo with a delete button
+        // use .splice to remove an item from the array (todo list)
+        // .splice takes 2 numbers, 1 is the index for the item you want to delete
+        // the 2 is how many values to remove at the specific index
+        // call the dispayTodoList function to show to list after deletion
+        const html  = `
+            <div>${name}</div>
+            <div>${dueDate}</div>
+            <button onclick="
+                todoList.splice(${i}, 1);
+                displayTodoList ();
+            " class="delete-todo-btn">Delete</button>
+            `;
     
         //store the html code into the todoListHtml variable
         todoListHtml += html;
     }
 
-    // console.log(todoListHtml);
-    
-    
     // bring the div with the class of js-todo-list into javascript in order to add the todo to the screen
     document.querySelector('.js-todo-list')
         .innerHTML = todoListHtml;
@@ -35,15 +57,24 @@ function addTodo () {
     const inputElement = document.querySelector('.js-input');
 
     // get the value from the input field
-    const todo = inputElement.value;
+    const name = inputElement.value;
+
+    const dateInputElement = document.querySelector('.js-due-date');
+
+    const dueDate = dateInputElement.value;
 
     // put the value from the input field into the array (use .push)
-    todoList.push(todo);
+    todoList.push({
+        // if the property and the variable name (value) are the same, type it once
+        // name: name,
+        // dueDate: dueDate
+        name,
+        dueDate
+    });
 
     // reset the text in the input field after the button is clicked
     inputElement.value = '';
-
-    console.log(todoList);
+    dateInputElement.value = '';
 
     // call the function displayTodoList to display the list on the screen
     displayTodoList ();
@@ -53,46 +84,3 @@ function addTodo () {
 // 1. Save the data
 // 2. Generate the HTML
 // 3. Make it interative 
-
-const nums = [10,20,30];
-
-nums[2] = 99;
-
-console.log(nums);
-
-// create a function that returns the last value in an array
-function getLastValue(array) {
-    const lastValue = array.length - 1;
-
-    return array[lastValue];
-}
-
-console.log(getLastValue([1, 20, 22, 24, 5]));
-
-console.log(getLastValue(['hi', 'hello', 'good']));
-
-// create a function that swaps the first and last value in an array
-function arraySwap (array) {
-    // get the index for the last value
-    const lastIndex = array.length - 1;
-
-    // save the values first before
-    // swapping. Otherwise, if swap directly,
-    // one of the values would be lost.
-    const firstValue = array[0];
-    const lastValue = array[lastIndex];
-
-    // swap values
-    array[0] = lastValue;
-    array[lastIndex] = firstValue;
-
-    return array;
-}
-
-console.log(arraySwap ([1, 20, 22, 24, 5]));
-
-console.log(arraySwap (['hi', 'hello', 'good']));
-
-for (let i = 0; i <= 10; i+2) {
-    console.log(i);
-}
